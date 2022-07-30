@@ -1,6 +1,12 @@
 # Spotifailure
 
 
+Aktuell: 
+
+Evaluation - alle functionalities enthalten 
+Setup - log in für user (eine Klasse die das vereinfachen soll. hier kann Spotify instance erzeugt werden und die genre feature extraction geholt werden)
+
+
 TODO für SONNTAG 
 
 1) Alles in einer Main function testen 
