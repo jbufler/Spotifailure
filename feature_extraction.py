@@ -12,7 +12,7 @@ def top_genre_extraction(c_id,c_secret,redirect):
                                                    client_secret=c_secret,
                                                    redirect_uri=redirect,
                                                    scope=scopes))
-    top = sp.current_user_top_tracks()
+    top = sp.current_user_top_tracks(limit=100)
     
     
     track_info_cols = ['id', 'genre', 'track_name', 'artist', 'artist_uri', 'album', 'release_date', # Track info
@@ -43,7 +43,7 @@ def top_genre_extraction(c_id,c_secret,redirect):
             for genre in genres:
                     # Add info to dictionary
                     currentGenre.append(genre)
-    
+
         row = {'id' : track_id,
                'genre' : currentGenre,
               'track_name' : track_name,
@@ -52,6 +52,8 @@ def top_genre_extraction(c_id,c_secret,redirect):
               'album' : album_name,
               'release_date' : release_date 
               }
+
+        print(row)
         # Need to create a dictionary for the audio features
         audio_feature_dict = {key: value for key, value in audio_features.items() if key in track_info_cols}
     
@@ -64,3 +66,18 @@ def top_genre_extraction(c_id,c_secret,redirect):
     song_df.to_csv(f'./top_song_genres.csv', 
                mode='a', 
                index=False)
+
+"""
+# my data 
+c_id =  "70542e66da8543619ed08f275dd12f57"
+c_secret =  "9e9eb08d496643cfbb20d3e52295eb42"
+redirect = "http://localhost:8888/callback/"
+top_genre_extraction(c_id, c_secret, redirect)
+"""
+
+# JULE's Daten 
+c_id =  "a8f23dd95faa48f489232cd9b03d1474"
+c_secret =  "b38f603ff7d745de85fc79f5c19bac04"
+redirect = "http://localhost:8888"
+scopes = "user-top-read"
+top_genre_extraction(c_id, c_secret, redirect)

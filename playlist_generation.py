@@ -10,6 +10,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 
+
 def playlist_generation(filepath1,filepath2,username,redirect,c_id,c_secret,playlist_max_length = 20):
     df1 = pd.read_csv(filepath1)
     df2 = pd.read_csv(filepath2)
@@ -66,3 +67,16 @@ def playlist_generation(filepath1,filepath2,username,redirect,c_id,c_secret,play
     identification = newPlaylist["id"]
     songList = list(df.id)
     sp.user_playlist_add_tracks(user=username,playlist_id=identification,tracks = songList)
+
+
+import os
+myfile=".cache-goody931"
+
+## If file exists, delete it ##
+if os.path.isfile(myfile):
+    os.remove(myfile)
+    
+c_id =  "70542e66da8543619ed08f275dd12f57"
+c_secret =  "9e9eb08d496643cfbb20d3e52295eb42"
+redirect = "http://localhost:8888/callback/"
+playlist_generation('top_song_genres_Jule.csv', 'top_song_genres_Lisa.csv', 'goody931', redirect, c_id, c_secret )
