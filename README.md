@@ -17,6 +17,12 @@ TODO für SONNTAG
 
 4) Kommentare schreiben 
 
-5) Wo müssen wir das Project abgeben? und wie spät?!
+5) Wo müssen wir das Project abgeben? 10 Uhr 5. August, Github 
 
 6) Bilder für die Documentation / readme 
+
+7) Daten in seperate file (c_id, usw.) 
+
+8) playlist generation (wegen doppeltem namen) 
+
+9) Genre? 
