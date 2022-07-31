@@ -13,7 +13,7 @@ TODO für SONNTAG
 
 2) documentation schreiben 
 
-3) User input? 
+3) User input? kivy
 
 4) Kommentare schreiben 
 
