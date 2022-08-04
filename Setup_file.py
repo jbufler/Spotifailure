@@ -29,17 +29,21 @@ class Setup(object):
                                                     client_secret=Setup.secret,
                                                     redirect_uri=Setup.redirect,
                                                     scope=Setup.scope,                                                   
-                                                    cache_path=Setup.session_cache_path(Setup.cid),
+                                                    cache_path=Setup.session_cache_path(self, Setup.cid),
                                                     show_dialog=True)
                                                     
         sp = spotipy.Spotify(auth_manager=auth_manager)
         return sp
 
 
-    def session_cache_path(c_id):
+    def session_cache_path(self, c_id):
         return Setup.caches_folder + c_id
 
-    
+    def get_current_user(self):
+        user = Setup.getSpotifyInstance(self).current_user()
+        displayName = user['display_name']
+        return displayName
+
     def top_genre_extraction(self):
         
         sp = Setup.getSpotifyInstance(self)
