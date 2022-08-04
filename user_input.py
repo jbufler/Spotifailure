@@ -1,5 +1,6 @@
 from functools import partial
 from threading import Thread
+from anyio import open_process
 
 import yfinance as yfinance
 from kivy.app import App
@@ -39,8 +40,7 @@ class WelcomeView(GridLayout):
                               padding_y=(20, 20),
                               size_hint=(1, 0.5)
                               )
-        print("name: ")
-        print(self.user.text)
+
         self.add_widget(self.user)
         self.entrance_button = Button(text='START',
                                       size_hint=(1, 0.5),
@@ -112,6 +112,8 @@ class OptionView(GridLayout):
             'center_y': 0.5
         }
 
+        self.feature = "danceability"
+
         self.greeting = Label(text='Choose one :D!',
                               font_size=18,
                               color='#33cccc')
@@ -142,6 +144,10 @@ class OptionView(GridLayout):
         self.user = Setup(c_id, c_secret, redirect)
         self.sp = self.user.getSpotifyInstance()
         self.df1 = self.user.top_genre_extraction()
+
+        self.user2 = Setup(c_id2, c_secret2, redirect2)
+        self.sp2 = self.user2.getSpotifyInstance()
+        self.df2 = self.user2.top_genre_extraction()
 
     def back_to_menu(self, *args):
         Clock.schedule_once(self.switch_to_menu, 3) 
@@ -234,6 +240,7 @@ class OptionView(GridLayout):
 
             # challenge a friend 
             case 5:
+
                 g = GridLayout(cols = 1,
                 size_hint = (0.6, 0.7),
                 pos_hint = {
@@ -245,29 +252,80 @@ class OptionView(GridLayout):
                 app.screen_manager.add_widget(screen)
                 Clock.schedule_once(self.switch_to_challenge, 2) 
 
-                question = Label(text='Which playlist ids do you want to check?',
+                question = Label(text='Which feature do you want to check?',
                               font_size=18,
                               color='#33cccc')
                 g.add_widget(question)
                 # user input: playlist id, feature (feature mit buttons lösen )
                 # Adding the text input
-                t = TextInput(font_size = 50,
-                      size_hint_y = None,
-                      height = 100)
-                g.add_widget(t)
+                
+                # buttons FEATURES 
+                danceability = Button(text ='danceability')
+                valence = Button(text ='valence')
+                liveness = Button(text='liveness')
+                loudness = Button(text="loudness")
+                energy = Button(text="energy")
+                tempo = Button(text="tempo")
 
-                print(t)
+                danceability.bind(on_press=lambda x:self.input_flush(danceability))
+                valence.bind(on_press=lambda x:self.input_flush(valence))
+                liveness.bind(on_press=lambda x:self.input_flush(liveness))
+                loudness.bind(on_press=lambda x:self.input_flush(loudness))
+                energy.bind(on_press=lambda x:self.input_flush(energy))
+                tempo.bind(on_press=lambda x:self.input_flush(tempo))
 
-                #feature(self.sp, 0, feature=feat, playlist_id=p_id, playlist_id2=p_id2)
+                g.add_widget(danceability)
+                g.add_widget(valence)
+                g.add_widget(liveness)
+                g.add_widget(loudness)
+                g.add_widget(energy)
+                g.add_widget(tempo)
+
+                # second view 
+                g2 = GridLayout(cols = 1,
+                size_hint = (0.6, 0.7),
+                pos_hint = {
+                    'center_x': 0.5,
+                    'center_y': 0.5
+                })
+                screen = Screen(name="challenge2")
+                screen.add_widget(g2)
+                app.screen_manager.add_widget(screen)
+                
+
+                if from_ == 2: 
+                    # only for user 2
+                    output = feature(self.sp2, 0, self.feature, playlist_id, playlist_id2)
+
+                elif from_ == 1: 
+                    output =feature(self.sp, 0, self.feature, playlist_id, playlist_id2)
+
+                elif from_ == 0: 
+                    output = feature(self.sp, self.sp2, self.feature, playlist_id, playlist_id2)
+
+                output_ = Label(text=output,
+                              font_size=18,
+                              color='#33cccc')
+                g2.add_widget(output_)
+
+                
                 but = Button(text="BACK TO MAIN MENU", size_hint =(.5, .1))
                 but.bind(on_press=self.back_to_menu)
-                g.add_widget(but)
-                but2 = Button(text="Submit")
-                
+                g2.add_widget(but)
+            
+
 
             # playlist collaboration
             case 6: 
-                pass
+                playlist_generation(self.df1, self.df2, username, username2, self.sp, self.sp2)
+    
+    
+    def input_flush(self, button, *args): 
+        Clock.schedule_once(self.switch_to_challenge2, 2)
+        self.feature = button.text
+
+    def switch_to_challenge2(self,*args): 
+        app.screen_manager.current = "challenge2"
 
     def switch_to_challenge(self, *args): 
         app.screen_manager.current = "challenge"
