@@ -13,48 +13,80 @@ from user_data import *
 
 def popularity(df):
 
-    #df = pd.read_csv('data/top_song_features.csv')
+    """
+    measure the average popularity of entered songs, calculates how obscure the playlist is and prints it
+    gives back top 5 most popular and unpopular songs
+  
+  
+    Parameters:
+    df (DataFrame): Dataframe of songs containing column measuring the popularity
+  
+    Returns:
+    print
+    obscure score
+    top 5 most popular songs in Playlist
+    top 5 most unpopular songs
+  
+    """
+    #get popularity of songs, calculate mean popularity
     popular = list(df['popularity'])
-    #print(popular)
     mean = round(np.mean(popular))
+    #obscurity is the opposite of popularity, to calculate the obsurity percentage calculate 100-popularity
     obscure = 100 - mean
     string1 = "Your taste is ",obscure,"% obscure.\n\n"
 
+    #get inidces of rows for most and least popular songs
     number = 5
     highindices = sorted(range(len(popular)), key = lambda sub: popular[sub])[-number:]
     lowindices = sorted(range(len(popular)), key = lambda sub: popular[sub])[:number]
 
-    string = ""
+    #initialize the two strings
+    highString = ""
+    lowString = ""
     for i in range(number):
+        #append the top songs to string, starting with most popular which is last in the idices
         highindex = highindices[number-1-i]
-        obj = df.iloc[highindex]
-        string = string + "\n" + obj["track_name"] + " by " + obj["artist"][0]
+        highObj = df.iloc[highindex]
+        highString = highString + "\n" + highObj["track_name"] + " by " + highObj["artist"][0]
         
-    string2 = "Your most popular tracks are: \n", string
 
-    string = ""
     for i in range(number):
+        #append the least popular songs to string, starting with most unpopular which is first in the idices
         lowindex = lowindices[i]
-        obj = df.iloc[lowindex]
-        string = string + "\n" + obj["track_name"] + " by " + obj["artist"][0]
+        lowObj = df.iloc[lowindex]
+        lowString = lowString + "\n" + lowObj["track_name"] + " by " + lowObj["artist"][0]
+    
         
-    string3 = "\n\n" "Your least popular tracks are: \n", string
-    
-    values = string1 + string2 + string3
-    
+    # return a bundled string for the user app 
+    string2 = "Your most popular tracks are:\n ", highString,"\n\n", "Your least popular tracks are:\n ", lowString
+    values = string1 + string2
     return ' '.join(map(str, values))
+    
+ 
 
 
 def matplotlib(df): 
-    #df = top_genre_extraction(spotify)
-
+    
+    """
+    Gives out a visualization of audio features, one spider web chard and bar grapgh 
+  
+    Parameters:
+    df (DataFrame): Dataframe containing the extracted audio features
+  
+    Returns:
+    prints a spider web chart and bar graph showing audio features mapped
+  
+    """
+    
+    #get audio features from dataFrame by removing all other columns
     df = df.drop(df.loc[:, 'id':'popularity'].columns, axis=1)
+    #scale tempo down
     df['tempo'] = df['tempo']/100
-    mean = df.mean(axis=0)
-
+    #get labels and mean values from dataFrame
     labels = list(df)[:]
     features = df.mean().tolist()
 
+    #create the spiderweb graph
     angles = np.linspace(0, 2*np.pi, len(labels), endpoint=False)
     fig = plt.figure(figsize = (15,15))
 
@@ -63,6 +95,7 @@ def matplotlib(df):
     ax.fill(angles, features, alpha=0.3, color='green')
     ax.set_thetagrids(angles * 180/np.pi, labels , fontsize = 12)
 
+    #create the barplot
     fig, ax=plt.subplots(dpi=100)
     plt.bar(labels, features,color='green',alpha=0.3)
     plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.7)
@@ -77,6 +110,17 @@ def seaborn_heatmap(df):
     for i in columns: 
         df[i] = df[i].astype(float)
 
+    
+    """
+    A seaborn heatmap showing correlating audio features
+  
+    Parameters:
+    df (DataFrame): Dataframe containing the extracted audio features
+  
+    Returns:
+    prints a heatmap
+  
+    """
     # heatmap of audio features 
     sns.set()
     corr = df.corr()
@@ -85,6 +129,17 @@ def seaborn_heatmap(df):
 
 
 def artist_chart(df): 
+    """
+    Creates a Pie chart of the most listened to artists of input dataframe
+  
+    Parameters:
+    df (DataFrame): Dataframe containing the extracted artists
+  
+    Returns:
+    print pie chart of artists most listened to
+  
+    """
+    
     # Donut - 'Number of tracks by artist'
     print(df.columns)
     print(df['artist'])
@@ -107,8 +162,26 @@ def artist_chart(df):
     show(p)
 
 
-def playlist_generation(df1, df2, username,sp, sp_2, playlist_max_length = 20):
-
+def playlist_generation(df1, df2, username1,username2,sp, sp_2, playlist_max_length = 20):
+    """
+    Create a Playlist directly in Spotify on two accountns merged from two input playlists
+  
+    Parameters:
+    df1 (DataFrame): Dataframe of first users Playlist
+    df2 (DataFrame): Dataframe of second users Playlist
+    
+    username1 (string): String containing Spotify Username of first user
+    username2 (string): String containing Spotify Username of second user
+    
+    sp(spotipy Objects): spotipy object containing current authorization and scope of first user
+    sp_2(spotipy Objects): spotipy object containing current authorization and scope of second user
+    
+    playlist_max_length (int): maximum length of playlist
+  
+    Returns:
+    int: Description of return value
+  
+    """
 
     print("merging the data frames....")
     df = pd.read_csv("top_song_genres_Lisa.csv")
@@ -171,7 +244,6 @@ def playlist_generation(df1, df2, username,sp, sp_2, playlist_max_length = 20):
 
     n = Setup(c_id, c_secret, redirect, scope='playlist-modify-public')
     sp = n.getSpotifyInstance()
-
 
     n_2 = Setup(c_id2, c_secret2, redirect2, scope='playlist-modify-public')
     sp_2 = n_2.getSpotifyInstance()
