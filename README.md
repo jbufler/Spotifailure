@@ -36,16 +36,24 @@ Click on a spotify playlist, find the options symbol(three dots) and hover over 
 
 First make sure that all information has been correctly added in user_data.
 Run the File user_input to see almost all implemented functions by pressing the corresponding buttons.
-To create a shared playlist run the file TestMain
+Run the File Test Main to see the additional feature of shared playlist creation and all previous features.
 
 ## What our code can - functionalities 
 
 Our code can give you a nice display which asks you how you would like to analyse and compare your data. These functionalities include the following:
+- Extract a DataFrame with features about the top songs of an account
 - Checking how obscure your playlist is. Measures the mean of the popularity given by Spotify and tells you the name and artist of your five most popular and unpopular songs in order
 - Give you a Visualization of your average audio features in a playlist via a spider web graph and a bar plot
 - Give you a seaborn heatmap showing you which audio features of your playlist and another correlate
 - Give you a visualization of your most listened to artists via a Donut graph
 - Shared Playlist, creates a playlist with a user-chosen name and description on two accounts. This playlist is a merge between the top songs of both users. If any Songs or artists are the same they will be prioritised otherwise the top songs of each user will be added in an alternating fashion.
 
+## Files:
+
+Evaluation: All implemented functionalities
+Setup: Funtions for authorizing access for spotify and extracting a playlist.
+TestMain: Run all functionalities available
+user_data: file for entering all necessary values to access the spotify account
+user_input: Run most functionalities in a nice UI
 
 

@@ -184,11 +184,6 @@ def playlist_generation(df1, df2, username1,username2,sp, sp_2, playlist_max_len
     """
 
     print("merging the data frames....")
-    df = pd.read_csv("top_song_genres_Lisa.csv")
-
-    # muss popularity raus?
-    df1 = df1.drop("popularity", axis=1)
-    df2 = df2.drop("popularity", axis=1)
 
     # for construct 
     df1["genre"] = df1['genre'].apply(lambda x: ','.join(map(str, x)))
@@ -240,7 +235,7 @@ def playlist_generation(df1, df2, username1,username2,sp, sp_2, playlist_max_len
     
     print("Logging in of the user....")
     playlist_name = "Spotipy Merge"
-    playlist_description = "merged"
+    playlist_description = "A merged Playlist created with Python"
 
     n = Setup(c_id, c_secret, redirect, scope='playlist-modify-public')
     sp = n.getSpotifyInstance()
