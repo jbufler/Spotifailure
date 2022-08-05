@@ -55,5 +55,6 @@ Our code can give you a nice display which asks you how you would like to analys
 - TestMain: Run all functionalities available
 - user_data: file for entering all necessary values to access the spotify account
 - user_input: Run most functionalities in a nice UI
+- expected output: our resulting graphs when running the code
 
 
