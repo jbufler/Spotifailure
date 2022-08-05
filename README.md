@@ -18,13 +18,13 @@ In general, we learned how to work with libraries we had no prior knowledge of a
 - All libraries installed
 - Python 3.10
 
-Enter your information into the user_data file:
+Enter your information as strings into the user_data file:
 
 - Get Client Id and client secret:
 Go to Spotify Applications and create an App
 https://developer.spotify.com/dashboard/applications
 There you find your Client Id and Client Secret
-- Under Edit Settings, you need to enter a redirect, for example: https://127.0.0.1:8080/
+- Under Edit Settings, you need to enter a redirect, for example: http://localhost:8888/callback/ or https://127.0.0.1:8080/
 
 - Find Spotify username
 https://www.spotify.com/de/account/overview/
@@ -50,10 +50,10 @@ Our code can give you a nice display which asks you how you would like to analys
 
 ## Files:
 
-Evaluation: All implemented functionalities
-Setup: Funtions for authorizing access for spotify and extracting a playlist.
-TestMain: Run all functionalities available
-user_data: file for entering all necessary values to access the spotify account
-user_input: Run most functionalities in a nice UI
+- Evaluation: All implemented functionalities
+- Setup: Funtions for authorizing access for spotify and extracting a playlist.
+- TestMain: Run all functionalities available
+- user_data: file for entering all necessary values to access the spotify account
+- user_input: Run most functionalities in a nice UI
 
 
